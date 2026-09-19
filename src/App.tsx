@@ -95,6 +95,19 @@ export default function App() {
     document.documentElement.lang = language
     document.title = `Jonathan Ramos — ${t.role.replace('.', '')}`
   }, [language, t.role])
+  useEffect(() => {
+    const elements = document.querySelectorAll<HTMLElement>('.reveal')
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.16 })
+    elements.forEach((element) => observer.observe(element))
+    return () => observer.disconnect()
+  }, [language])
 
   return <main>
     <div className="noise" />
@@ -107,7 +120,7 @@ export default function App() {
     </header>
 
     <section id="home" className="hero">
-      <div className="hero-copy">
+      <div className="hero-copy hero-reveal">
         <p className="eyebrow"><span className="status-dot" /> {t.badge}</p>
         <p className="greeting">{t.greeting}</p>
         <h1>Jonathan<br /><span>Ramos.</span></h1>
@@ -115,20 +128,20 @@ export default function App() {
         <p className="intro">{t.intro}</p>
         <div className="actions"><a className="button primary" href={LINKS.linkedin} target="_blank" rel="noreferrer">{t.linkedin} <ExternalArrow /></a><a className="button secondary" href={LINKS.github} target="_blank" rel="noreferrer">{t.github} <ExternalArrow /></a></div>
       </div>
-      <div className="hero-art"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><Avatar /><p className="coordinates">16°19′S / 48°57′W<br />BRAZIL // UTC−03</p></div>
+      <div className="hero-art hero-art-reveal"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><Avatar /><p className="coordinates">16°19′S / 48°57′W<br />BRAZIL // UTC−03</p></div>
       <a className="scroll-hint" href="#about"><span />{t.scroll}</a>
     </section>
 
     <section id="about" className="section about">
-      <div className="section-heading"><p className="eyebrow">{t.aboutEyebrow}</p><h2>{t.aboutTitle.split('\n').map((line, i) => <span key={i}>{line}</span>)}</h2></div>
-      <div className="about-content"><p>{t.about}</p><dl><div><dt>{t.factLocation}</dt><dd>{t.factLocationValue}</dd></div><div><dt>{t.factCurrent}</dt><dd>{t.factCurrentValue}</dd></div><div><dt>{t.factEducation}</dt><dd>{t.factEducationValue}</dd></div></dl></div>
+      <div className="section-heading reveal"><p className="eyebrow">{t.aboutEyebrow}</p><h2>{t.aboutTitle.split('\n').map((line, i) => <span key={i}>{line}</span>)}</h2></div>
+      <div className="about-content reveal reveal-delay"><p>{t.about}</p><dl><div><dt>{t.factLocation}</dt><dd>{t.factLocationValue}</dd></div><div><dt>{t.factCurrent}</dt><dd>{t.factCurrentValue}</dd></div><div><dt>{t.factEducation}</dt><dd>{t.factEducationValue}</dd></div></dl></div>
     </section>
 
-    <section id="stack" className="section stack"><div className="stack-intro"><p className="eyebrow">{t.stackEyebrow}</p><h2>{t.stackTitle.split('\n').map((line, i) => <span key={i}>{line}</span>)}</h2><p>{t.stackText}</p></div><div className="skill-grid">{t.groups.map((group, index) => <article className="skill-card" key={group.title}><span className="card-index">0{index + 1}</span><h3>{group.title}</h3><p>{group.text}</p><ul>{group.skills.map((skill) => <li key={skill}>{skill}</li>)}</ul></article>)}</div></section>
+    <section id="stack" className="section stack"><div className="stack-intro reveal"><p className="eyebrow">{t.stackEyebrow}</p><h2>{t.stackTitle.split('\n').map((line, i) => <span key={i}>{line}</span>)}</h2><p>{t.stackText}</p></div><div className="skill-grid">{t.groups.map((group, index) => <article className={`skill-card reveal reveal-card-${index + 1}`} key={group.title}><span className="card-index">0{index + 1}</span><h3>{group.title}</h3><p>{group.text}</p><ul>{group.skills.map((skill) => <li key={skill}>{skill}</li>)}</ul></article>)}</div></section>
 
-    <section className="quote"><span>“</span><p>{t.quote}</p><i /></section>
+    <section className="quote reveal"><span>“</span><p>{t.quote}</p><i /></section>
 
-    <section id="contact" className="section contact"><p className="eyebrow">{t.contactEyebrow}</p><h2>{t.contactTitle.split('\n').map((line, i) => <span key={i}>{line}</span>)}</h2><p>{t.contactText}</p><div className="contact-links"><a href={LINKS.linkedin} target="_blank" rel="noreferrer"><span>in</span>{t.contactLinkedin}<ExternalArrow /></a><a href={LINKS.github} target="_blank" rel="noreferrer"><span>gh</span>{t.contactGithub}<ExternalArrow /></a></div></section>
+    <section id="contact" className="section contact reveal"><p className="eyebrow">{t.contactEyebrow}</p><h2>{t.contactTitle.split('\n').map((line, i) => <span key={i}>{line}</span>)}</h2><p>{t.contactText}</p><div className="contact-links"><a href={LINKS.linkedin} target="_blank" rel="noreferrer"><span>in</span>{t.contactLinkedin}<ExternalArrow /></a><a href={LINKS.github} target="_blank" rel="noreferrer"><span>gh</span>{t.contactGithub}<ExternalArrow /></a></div></section>
 
     <footer><a className="brand" href="#home"><span>JR</span><i /></a><p>© {new Date().getFullYear()} · {t.footer}</p><a href="#home">↑ TOP</a></footer>
   </main>
