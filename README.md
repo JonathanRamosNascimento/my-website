@@ -26,22 +26,22 @@ No servidor, instale Docker com o plugin Docker Compose, clone ou copie esta pas
 docker compose up -d --build
 ```
 
-O site ficará disponível em `http://IP-DO-SERVIDOR:8080`. Para alterar a porta exposta:
+O site ficará disponível em `http://IP-DO-SERVIDOR:8090`. Para alterar a porta exposta:
 
 ```bash
-PORT=8090 docker compose up -d --build
+PORT=8080 docker compose up -d --build
 ```
 
 ### Reverse proxy e HTTPS
 
-Para usar um domínio, exponha o container apenas para a rede local e encaminhe o domínio para `http://IP-DO-SERVIDOR:8080` usando seu reverse proxy (Nginx Proxy Manager, Caddy, Traefik ou Nginx). O proxy deve encerrar HTTPS e encaminhar a requisição para essa porta.
+Para usar um domínio, exponha o container apenas para a rede local e encaminhe o domínio para `http://IP-DO-SERVIDOR:8090` usando seu reverse proxy (Nginx Proxy Manager, Caddy, Traefik ou Nginx). O proxy deve encerrar HTTPS e encaminhar a requisição para essa porta.
 
 Exemplo mínimo de bloco Nginx no proxy:
 
 ```nginx
 server {
   server_name seu-dominio.com;
-  location / { proxy_pass http://127.0.0.1:8080; }
+  location / { proxy_pass http://127.0.0.1:8090; }
 }
 ```
 
